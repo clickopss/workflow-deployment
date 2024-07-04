@@ -15,19 +15,17 @@ on:
         type: choice
         description: Application
         options:
-        - azuracast
-        - vh-server
-        - cs-server
+        - ansible-azuracast
+        - ansible-vh-server
+        - ansible-cs-server
 
 jobs:
   terraform:
     uses: clickopss/terraform-workflow/.github/workflows/workflow.yml@main
     with:
       ansible_deployment: ${{ github.event.inputs.cloud }}
-    secrets:
-      tf_api_token: ${{ secrets.TF_API_TOKEN }}
-      hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-      ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+    secrets: inherit
+
 
   ansible:
     needs: terraform
