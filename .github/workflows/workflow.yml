@@ -21,7 +21,7 @@ on:
 
 jobs:
   terraform:
-    uses: clickopss/terraform-workflow/.github/workflows/workflow.yml@main
+    uses: clickopss/workflow-terraform/.github/workflows/workflow.yml@main
     with:
       ansible_deployment: ${{ github.event.inputs.cloud }}
     secrets: inherit
@@ -29,7 +29,7 @@ jobs:
 
   ansible:
     needs: terraform
-    uses: clickopss/ansible-workflow/.github/workflows/workflow.yml@main
+    uses: clickopss/workflow-ansible/.github/workflows/workflow.yml@main
     with:
       ipv4: ${{ needs.terraform.outputs.ipv4 }}
       ansible_deployment: ${{ github.event.inputs.app }}
