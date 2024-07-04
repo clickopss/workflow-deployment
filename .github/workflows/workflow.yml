@@ -23,7 +23,7 @@ jobs:
   terraform:
     uses: clickopss/workflow-terraform/.github/workflows/workflow.yml@main
     with:
-      ansible_deployment: ${{ github.event.inputs.cloud }}
+      tf_cloud: ${{ github.event.inputs.cloud }}
     secrets: inherit
 
 
