@@ -1,0 +1,22 @@
+name: Deployment
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    uses: clickopss/terraform-workflow/.github/workflows/workflow.yml@main
+    secrets:
+      tf_api_token: ${{ secrets.TF_API_TOKEN }}
+      hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+      ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+
+  ansible:
+    needs: terraform
+    uses: clickopss/ansible-workflow/.github/workflows/workflow.yml@main
+    with:
+      ipv4: ${{ needs.terraform.outputs.ipv4 }}
+    secrets:
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
