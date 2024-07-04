@@ -3,10 +3,27 @@ name: Deployment
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      cloud:
+        type: choice
+        description: Cloud
+        options: 
+        - hcloud
+        - aws
+        - azure
+      app:
+        type: choice
+        description: Application
+        options:
+        - azuracast
+        - vh-server
+        - cs-server
 
 jobs:
   terraform:
     uses: clickopss/terraform-workflow/.github/workflows/workflow.yml@main
+    with:
+      ansible_deployment: ${{ github.event.inputs.cloud }}
     secrets:
       tf_api_token: ${{ secrets.TF_API_TOKEN }}
       hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
@@ -17,6 +34,6 @@ jobs:
     uses: clickopss/ansible-workflow/.github/workflows/workflow.yml@main
     with:
       ipv4: ${{ needs.terraform.outputs.ipv4 }}
+      ansible_deployment: ${{ github.event.inputs.app }}
     secrets:
       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
