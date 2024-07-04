@@ -18,7 +18,9 @@ on:
         - ansible-azuracast
         - ansible-vh-server
         - ansible-cs-server
+        
 
+  
 jobs:
   terraform:
     uses: clickopss/workflow-terraform/.github/workflows/workflow.yml@main
@@ -33,5 +35,4 @@ jobs:
     with:
       ipv4: ${{ needs.terraform.outputs.ipv4 }}
       ansible_deployment: ${{ github.event.inputs.app }}
-    secrets:
-      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+    secrets: inherit
